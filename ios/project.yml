@@ -1,0 +1,47 @@
+# XcodeGen spec. Generate the Xcode project with:
+#   brew install xcodegen && cd ios && xcodegen
+# The generated CarGPT.xcodeproj is not committed; edit this file instead.
+
+name: CarGPT
+
+options:
+  deploymentTarget:
+    # The voice-based conversational CarPlay category needs iOS 26.4.
+    iOS: "26.4"
+
+packages:
+  CarGPTCore:
+    path: CarGPTCore
+
+settings:
+  base:
+    # Your Apple Developer team ID.
+    DEVELOPMENT_TEAM: ""
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  CarGPT:
+    type: application
+    platform: iOS
+    sources:
+      - path: CarGPT
+        excludes:
+          - Info.plist
+          - CarGPT.entitlements
+    dependencies:
+      - package: CarGPTCore
+    settings:
+      base:
+        # Must match APPLE_BUNDLE_ID in backend/.env.
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.cargpt
+        INFOPLIST_FILE: CarGPT/Info.plist
+        CODE_SIGN_ENTITLEMENTS: CarGPT/CarGPT.entitlements
+        TARGETED_DEVICE_FAMILY: "1"
+      configs:
+        Debug:
+          BACKEND_URL: http://localhost:8787
+        Release:
+          # Replace with your deployed backend before shipping.
+          BACKEND_URL: https://api.example.com

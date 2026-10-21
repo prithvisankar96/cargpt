@@ -1,0 +1,15 @@
+# Backend
+node_modules/
+dist/
+.env
+
+# iOS (the project is generated from ios/project.yml)
+ios/*.xcodeproj/
+ios/*.xcworkspace/
+xcuserdata/
+DerivedData/
+.build/
+.swiftpm/
+Package.resolved
+
+.DS_Store
