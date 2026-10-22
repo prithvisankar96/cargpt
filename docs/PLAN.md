@@ -58,13 +58,15 @@ taps Stop, CarPlay disconnects, or a call or Siri interrupts the audio.
 
 ### 0. Apple setup (you)
 - [ ] Paid Apple Developer account and an App ID with Sign in with Apple
-- [ ] Request the voice-based conversational CarPlay entitlement (approval takes time; start now)
+- [ ] Request the voice-based conversational CarPlay entitlement (approval takes time; start now).
+      Draft answers: [CARPLAY_ENTITLEMENT.md](CARPLAY_ENTITLEMENT.md)
 - [ ] Pick the final app name (see open decisions)
 
 ### 1. Voice loop on the phone
 - [x] Backend: Sign in with Apple exchange, session tokens, rate limiting, streaming chat endpoint, tests
 - [x] iOS: speech-to-text, streaming client, sentence-by-sentence speech, phone UI
-- [ ] Build and run on a Mac; fix whatever the iOS SDK compiler flags
+- [x] Compile against the iOS SDK (CI on a GitHub macOS runner)
+- [ ] Run on the simulator and an iPhone
 - [ ] Measure the time from the driver going quiet to the first spoken word (target: under 1.5 s)
 - [ ] Tune the system prompt for spoken answers
 

@@ -72,8 +72,14 @@ cd ios/CarGPTCore
 swift test
 ```
 
+## CI
+
+`.github/workflows/ci.yml` runs on every push: backend typecheck and tests on
+Linux, then on a macOS runner the core package tests, `xcodegen`, and a simulator
+build of the app (unsigned, so it doesn't need the CarPlay entitlement).
+
 ## Status
 
-The backend is tested (unit tests plus a local run). The Swift core package is
-tested. The iOS app has been syntax-checked but not yet compiled against the iOS
-SDK, so expect a few fixes on the first Xcode build.
+The backend is tested (unit tests plus a local run), and the app compiles against
+the iOS SDK in CI. Nothing has run on a simulator, iPhone, or car yet. The CarPlay
+entitlement request is drafted in [docs/CARPLAY_ENTITLEMENT.md](docs/CARPLAY_ENTITLEMENT.md).
