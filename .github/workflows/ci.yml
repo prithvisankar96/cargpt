@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+  ios:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select the newest released Xcode
+        run: |
+          xcode=$(ls -d /Applications/Xcode_*.app | grep -iv beta | sort -V | tail -1)
+          sudo xcode-select -s "$xcode"
+          xcodebuild -version
+          xcodebuild -showsdks | grep -i iphonesimulator
+
+      - name: Test the core package
+        working-directory: ios/CarGPTCore
+        run: swift test
+
+      - name: Generate the Xcode project
+        working-directory: ios
+        run: |
+          brew install xcodegen
+          xcodegen
+
+      - name: Build the app for the simulator
+        working-directory: ios
+        run: >
+          xcodebuild build -quiet
+          -project CarGPT.xcodeproj
+          -scheme CarGPT
+          -destination 'generic/platform=iOS Simulator'
+          CODE_SIGNING_ALLOWED=NO
